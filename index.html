@@ -3,25 +3,197 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>NoterTaking-App</title>
   <link rel="stylesheet" href="style.css">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
-<body>
-  <div class="section1">
-    <div class="navBar">
-      <div class="imgcontainer">
-        <img src="icons/me.jpg" alt="" style="height: 100px;">
-      </div>
+<style>
+  body{
+    background: black;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.bgApp{
+    background-color: #333333;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+}
+
+.toggleButton{
+    position: absolute;
+    right:20px;
+    top: 20px;
+    font-size: 1rem;
+    font-weight: 900;
+    padding: 10px 20px;
+    margin: 10px ;
+    border-radius: 5px;
+    border: none;  background-color: #3ea5dd;
+    color: #fff;
+    cursor: pointer;
+}
+.container{
+    background-color: #222222;
+    color: #fff;
+    width: 30vw;
+    height: 50vh;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+}
+
+.inputContainer{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.inputHeading{
+    margin-left: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    flex-grow: 1;
+    font-size: 1rem;
+    border-radius: 5px;
+    background-color: #222;
+    border:1px solid #444
+}
+.inputContent{
+    margin-left: 10px;
+    padding: 2px;
+    min-height: 100px;
+    resize: none;
+    box-sizing: border-box;
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #ccc;
+    border-radius: 5px;
+    background-color: #222;
+    border:1px solid #444
+    
+}
+.inputContainer button{
+    display: grid;
+    font-weight: 900;
+    padding: 10px 20px;
+    margin-left: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;  background-color: #3ea5dd;
+    color: #fff;
+    cursor: pointer;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding:  10px 2px;
+    margin-left: 15px;
+}
+
+.todo-item-title {
+    font-weight: bold;
+}
+
+.blobContainer{
+    background-color: #333333;
+    color: #fff;
+    width: 40vw;
+    height: 80vh;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.blob{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.blobBlur{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    filter: blur(50px);
+}
+
+</style>
+<body>  
+    <!-- <button class="toggleButton">Toggle Theme</button> -->
+  <section class="bgApp"> 
+    <!-- blob -->
+    <div class="blobContainer">
+      <div class="blob">
+        <svg id="visual" viewBox="410 180 600 600" width="950" height="800" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" preserveAspectRatio="xMidYMid meet">
+          <defs>
+              <radialGradient id="b" r="100%" cx="44%" cy="42%">
+                  <stop offset="0%" stop-color="#17ffb9" />
+                  <stop offset="50%" stop-color="#3ae2ff" />
+                  <stop offset="100%" stop-color="#99f0ff" />
+              </radialGradient>
+          </defs>
+          <g transform="translate(693.036826263105 478.0939504591411)">
+              <path fill="url(#b)">
+                  <animate attributeName="d" dur="50000ms" repeatCount="indefinite" values="M123.1 -125.6C153.7 -92.4 168.9 -46.2 163.4 -5.4C158 35.4 132 70.7 101.4 98.2C70.7 125.7 35.4 145.4 -10.5 155.8C-56.3 166.3 -112.7 167.7 -141.7 140.2C-170.7 112.7 -172.3 56.3 -179.5 -7.2C-186.7 -70.7 -199.4 -141.4 -170.4 -174.6C-141.4 -207.8 -70.7 -203.4 -12.3 -191.1C46.2 -178.9 92.4 -158.7 123.1 -125.6;
+                          M120.7 -97.7C170.7 -70.7 235.4 -35.4 247.6 12.3C259.9 59.9 219.7 119.7 169.7 148.1C119.7 176.4 59.9 173.2 -3.9 177.1C-67.6 181 -135.3 192 -171 163.6C-206.6 135.3 -210.3 67.6 -196.2 14.1C-182 -39.4 -150.1 -78.7 -114.4 -105.7C-78.7 -132.7 -39.4 -147.4 -2 -145.4C35.4 -143.4 70.7 -124.7 120.7 -97.7;
+                          M177.5 -165C216.8 -138.1 226.4 -69.1 223.4 -2.9C220.5 63.2 205 126.3 165.7 176.3C126.3 226.3 63.2 263.2 7.1 256.1C-49 249 -98.1 198.1 -123.1 148.1C-148.1 98.1 -149 49 -155.6 -6.6C-162.2 -62.2 -174.5 -124.5 -149.5 -151.3C-124.5 -178.1 -62.2 -169.6 3.4 -173C69.1 -176.4 138.1 -191.8 177.5 -165;
+                          M123.1 -125.6C153.7 -92.4 168.9 -46.2 163.4 -5.4C158 35.4 132 70.7 101.4 98.2C70.7 125.7 35.4 145.4 -10.5 155.8C-56.3 166.3 -112.7 167.7 -141.7 140.2C-170.7 112.7 -172.3 56.3 -179.5 -7.2C-186.7 -70.7 -199.4 -141.4 -170.4 -174.6C-141.4 -207.8 -70.7 -203.4 -12.3 -191.1C46.2 -178.9 92.4 -158.7 123.1 -125.6;">
+                  </animate>
+              </path>
+          </g>
+      </svg>
       
-    <div class="mainPage">
-
+        
     </div>
-  </div>
-  <div class="section2">
 
-  </div>
+    <div class="blobBlur">
+      <svg id="visual" viewBox="410 180 600 600" width="950" height="800" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" preserveAspectRatio="xMidYMid meet">
+        <defs>
+            <radialGradient id="b" r="100%" cx="44%" cy="42%">
+                <stop offset="0%" stop-color="#17ffb9" />
+                <stop offset="50%" stop-color="#3ae2ff" />
+                <stop offset="100%" stop-color="#99f0ff" />
+            </radialGradient>
+        </defs>
+        <g transform="translate(693.036826263105 478.0939504591411)">
+            <path fill="url(#b)">
+                <animate attributeName="d" dur="50000ms" repeatCount="indefinite" values="M123.1 -125.6C153.7 -92.4 168.9 -46.2 163.4 -5.4C158 35.4 132 70.7 101.4 98.2C70.7 125.7 35.4 145.4 -10.5 155.8C-56.3 166.3 -112.7 167.7 -141.7 140.2C-170.7 112.7 -172.3 56.3 -179.5 -7.2C-186.7 -70.7 -199.4 -141.4 -170.4 -174.6C-141.4 -207.8 -70.7 -203.4 -12.3 -191.1C46.2 -178.9 92.4 -158.7 123.1 -125.6;
+                        M120.7 -97.7C170.7 -70.7 235.4 -35.4 247.6 12.3C259.9 59.9 219.7 119.7 169.7 148.1C119.7 176.4 59.9 173.2 -3.9 177.1C-67.6 181 -135.3 192 -171 163.6C-206.6 135.3 -210.3 67.6 -196.2 14.1C-182 -39.4 -150.1 -78.7 -114.4 -105.7C-78.7 -132.7 -39.4 -147.4 -2 -145.4C35.4 -143.4 70.7 -124.7 120.7 -97.7;
+                        M177.5 -165C216.8 -138.1 226.4 -69.1 223.4 -2.9C220.5 63.2 205 126.3 165.7 176.3C126.3 226.3 63.2 263.2 7.1 256.1C-49 249 -98.1 198.1 -123.1 148.1C-148.1 98.1 -149 49 -155.6 -6.6C-162.2 -62.2 -174.5 -124.5 -149.5 -151.3C-124.5 -178.1 -62.2 -169.6 3.4 -173C69.1 -176.4 138.1 -191.8 177.5 -165;
+                        M123.1 -125.6C153.7 -92.4 168.9 -46.2 163.4 -5.4C158 35.4 132 70.7 101.4 98.2C70.7 125.7 35.4 145.4 -10.5 155.8C-56.3 166.3 -112.7 167.7 -141.7 140.2C-170.7 112.7 -172.3 56.3 -179.5 -7.2C-186.7 -70.7 -199.4 -141.4 -170.4 -174.6C-141.4 -207.8 -70.7 -203.4 -12.3 -191.1C46.2 -178.9 92.4 -158.7 123.1 -125.6;">
+                </animate>
+            </path>
+        </g>
+    </svg>
+    
+        
+    </div>
+    </div>
+    <!-- note container -->
+    <div class="container">
+    <h2>NoteTaking-App</h2>
+    <div class="inputContainer">
+      <input class="inputHeading"type="text" placeholder="Heading">
+      <textarea class="inputContent"name="blabla" id="" cols="50" rows="10" placeholder="content"></textarea></textarea>
+      <button >Add</button>
+    </div>
+    </div>
+  </section>  
 </body>
 </html>
